@@ -1,5 +1,5 @@
 //
-//  Product+CoreDataProperties.swift
+//  Item+CoreDataProperties.swift
 //  Shopping Cart
 //
 //  Created by Nikhil on 19/12/16.
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension Product {
+extension Item {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Product> {
-        return NSFetchRequest<Product>(entityName: "Products");
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Item> {
+        return NSFetchRequest<Item>(entityName: "Item");
     }
 
     @NSManaged public var id: String?

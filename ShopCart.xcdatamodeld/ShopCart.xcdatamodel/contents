@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Product" representedClassName=".Product" syncable="YES">
+    <entity name="Item" representedClassName=".Item" syncable="YES">
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="instock" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,6 +10,6 @@
         <attribute name="ship" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Product" positionX="-1107" positionY="-711" width="128" height="148"/>
+        <element name="Item" positionX="-27" positionY="18" width="128" height="150"/>
     </elements>
 </model>

@@ -11,12 +11,12 @@ import UIKit
 import CoreData
 
 class DisplayCartViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-
+    static let SharedInstance = DisplayCartViewController()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var requestProduct: NSFetchRequest<Product> = Product.fetchRequest()
+    var requestProduct: NSFetchRequest<Item> = Item.fetchRequest()
     var appDelegate = (UIApplication.shared.delegate as! AppDelegate)
-    var frController: NSFetchedResultsController<Product>!
-    var data: [Product]!
+    var frController: NSFetchedResultsController<Item>!
+    var data: [Item]!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -43,11 +43,11 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
         return cell!
     }
     
-    func fetchResultsController() -> NSFetchedResultsController<Product>
+    func fetchResultsController() -> NSFetchedResultsController<Item>
     {
-       // self.requestProduct.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        self.requestProduct.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let frc = NSFetchedResultsController(fetchRequest: self.requestProduct , managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
-       // frc.delegate = self
+    //    frc.delegate = self
         do
         {
             try frc.performFetch()
