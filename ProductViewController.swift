@@ -65,11 +65,15 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+        
+        let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
+        
         let productController = self.storyboard!.instantiateViewController(withIdentifier: "ProductDetailsViewController") as! ProductDetailsViewController
         
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
-        
+       
+        productController.productDetail = productInfo
         productController.productCode = (currentCell.textLabel?.text)!
         
         self.navigationController!.pushViewController(productController, animated: true)
