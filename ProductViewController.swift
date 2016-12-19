@@ -13,105 +13,122 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     var product : CategoryList!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        // self.name.text = product.code
-       /* ViewController.sharedInstance.searchProduct(categoryID: product.code, completionHandler: {(success, error) in
+        tableView.delegate = self
+        tableView.dataSource = self
+        setUIEnable(enable: false)
+        ViewController.sharedInstance.searchProduct(categoryID: self.product.code, completionHandler: {(success, error) in
             if success{
-                print("success")
+                DispatchQueue.main.async {
+                performUIUpdatesOnMain(updates: {self.setUIEnable(enable: true)
+                })
+                print("in success")
+                self.tableView.reloadData()
+                }
             }
             else {
-                print("fail")
-            }
-        })*/
+                
+                performUIUpdatesOnMain(updates:{
+                    Alert.sharedInstance.showAlert(controller: self, title: "Internet Connection Failed", message: "Please Check the Internet")
+                    })
+                self.setUIEnable(enable: true)
+
+        }
+        })
+        
+    setUIEnable(enable: true)
     self.tableView.reloadData()
     }
-
+    override func viewDidAppear(_ animated: Bool) {
     
-    override func viewDidLoad() {
-        ViewController.sharedInstance.searchProduct(categoryID: product.code, completionHandler: {(success, error) in
-            if success{
-                print("success")
-            }
-            else {
-                print("fail")
-            }
-        })
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+      tableView.delegate = nil
+        tableView.dataSource = nil
+        
+    }
     
+    override func viewDidLoad() {
+        self.tableView.reloadData()
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ProductDetails.sharedInstance.productData.count
     }
-
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120.0
+        
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.contentView.backgroundColor = UIColor.clear
+        
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 120))
+        
+        whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
+        whiteRoundedView.layer.masksToBounds = false
+        whiteRoundedView.layer.cornerRadius = 2.0
+        whiteRoundedView.layer.shadowOffset = CGSize(width: -1,height: 1)
+        whiteRoundedView.layer.shadowOpacity = 0.2
+        
+        cell.contentView.addSubview(whiteRoundedView)
+        cell.contentView.sendSubview(toBack: whiteRoundedView)
+        
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
         let cell = UITableViewCell(style: UITableViewCellStyle.subtitle , reuseIdentifier: "studentCell")
      //   cell.imageView?.image = UIImage(named: "Pin")
-        cell.textLabel?.text = productInfo.name
-        cell.detailTextLabel?.text = productInfo.price
-        let code = productInfo.id
-        cell.textLabel?.text = code
-        return cell
+       cell.textLabel?.numberOfLines = 0
+  cell.textLabel?.text = productInfo.name
+        cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = "INR \(productInfo.price)"
+        
+      /*  let url = NSURL(string: productInfo.image_url)
+        let data = NSData(contentsOf: url! as URL)
+        if data != nil{
+        cell.imageView?.image = UIImage(data: data! as Data)
+        }
+        */
+        
+               return cell
     }
-
-  
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-        
+        // trying -1
         let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
-        
         let productController = self.storyboard!.instantiateViewController(withIdentifier: "ProductDetailsViewController") as! ProductDetailsViewController
-        
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
-       
         productController.productDetail = productInfo
         productController.productCode = (currentCell.textLabel?.text)!
-        
         self.navigationController!.pushViewController(productController, animated: true)
     }
- 
     
     
     
-/*
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let productController = self.storyboard!.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
-        
-        productController.product = self.allCategories[(indexPath as NSIndexPath).row]
-        self.navigationController!.pushViewController(productController, animated: true)
-    }
-    */
-
-    
-    @IBOutlet weak var backButton: UIBarButtonItem!
-       @IBOutlet weak var name: UILabel!
-
-    
-    
-    @IBAction func backButtonPressed(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    @IBOutlet weak var search: UIButton!
-    
-    @IBAction func searchButton(_ sender: AnyObject) {
-        ViewController.sharedInstance.searchProduct(categoryID: product.code, completionHandler: {(success, error) in
-            if success{
-            print("success")
-            }
-            else {
-            print("fail")
-            }
+    func setUIEnable(enable: Bool){
+        if enable{
+        performUIUpdatesOnMain(updates: {
+        self.tableView.alpha = 1
+        self.activityIndicator.stopAnimating()
         })
+        }else{
+            self.tableView.alpha = 0.5
+            self.activityIndicator.startAnimating()
         }
     
+    }
+       
  }

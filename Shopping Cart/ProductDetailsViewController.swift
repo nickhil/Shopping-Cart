@@ -17,10 +17,7 @@ class ProductDetailsViewController: UIViewController{
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var fetchProduct: NSFetchRequest<Item> = Item.fetchRequest()
     var appDelegate = (UIApplication.shared.delegate as! AppDelegate)
-    
-   // var productDetail : ProductDetails
     var productCode : String = ""
-//    var productDetail([ProductDetails.sharedInstance.productData])
     var productDetail : ProductList!
 
     @IBOutlet weak var displayCartButton: UIButton!
@@ -28,55 +25,39 @@ class ProductDetailsViewController: UIViewController{
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     
+    @IBOutlet weak var inStockLabel: UILabel!
     
+    @IBOutlet weak var productImage: UIImageView!
+    @IBOutlet weak var shipLabel: UILabel!
     override func viewDidLoad() {
         displayDetails()
     }
     
-    @IBAction func displayCartButtonPressed(_ sender: AnyObject) {
-        
-        
-        
-        }
+
+    
     func displayDetails(){
-        codeLabel.text = productDetail.id
-        nameLabel.text = productDetail.name
-        priceLabel.text = productDetail.price
+        nameLabel.numberOfLines = 0
+        codeLabel.text = "Product Code: \(productDetail.id)"
+        nameLabel.text = "Product:\(productDetail.name)"
+        priceLabel.text = "Cost: \(productDetail.price)"
+        inStockLabel.text = "In Stock: \(productDetail.instock) piece(s)"
+        shipLabel.text = "To be Shipped in:\(productDetail.ship) days"
+        productImage.contentMode = .scaleAspectFit
+        let url = NSURL(string: productDetail.image_url)
+        let data = NSData(contentsOf: url! as URL)
+        if data != nil{
+        performUIUpdatesOnMain(updates: {
+            self.productImage.image = UIImage(data: data! as Data)
+         })
+        }
+        
     }
     
-    
-    
     @IBAction func addToCartButtonPressed(_ sender: AnyObject) {
- 
-        /*
-       let entityDescription =
-            NSEntityDescription.entity(forEntityName: "Product" ,
-                                       in: context)
-        
-        let product = Product(entity: entityDescription!, insertInto: context)
- 
-        product.id = productDetail.id
-        product.image_url = productDetail.image_url
-        product.instock = productDetail.instock
-        product.name = productDetail.name
-        product.permalink = productDetail.permalink
-        product.price = productDetail.price
-        product.ship = productDetail.ship
-        
-        do {
-            try context.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
- */
-        
-        
         let entityDescription =
             NSEntityDescription.entity(forEntityName: "Item" ,
                                        in: context)
-        
         let item = Item(entity: entityDescription!, insertInto: context)
-        
         item.id = productDetail.id
         item.image_url = productDetail.image_url
         item.instock = productDetail.instock
@@ -87,10 +68,10 @@ class ProductDetailsViewController: UIViewController{
         
         do {
             try context.save()
+            Alert.sharedInstance.showAlert(controller: self, title: "Success", message: "Product added to your cart succesfully")
             print("Saved")
         } catch let error {
-            print(error.localizedDescription)
+            Alert.sharedInstance.showAlert(controller: self, title: "Cannot add product to the cart", message: error.localizedDescription)
         }
-        
- }
+        }
    }

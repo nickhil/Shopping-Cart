@@ -18,8 +18,14 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
     var frController: NSFetchedResultsController<Item>!
     var data: [Item]!
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
+    
+    @IBOutlet weak var cancelButtonPressed: UIBarButtonItem!
+    @IBAction func cancelButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
 
     override func viewDidLoad() {
         frController = fetchResultsController()
@@ -36,6 +42,26 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120.0
+        
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.contentView.backgroundColor = UIColor.clear
+        
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 120))
+        
+        whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
+        whiteRoundedView.layer.masksToBounds = false
+        whiteRoundedView.layer.cornerRadius = 2.0
+        whiteRoundedView.layer.shadowOffset = CGSize(width: -1,height: 1)
+        whiteRoundedView.layer.shadowOpacity = 0.2
+        
+        cell.contentView.addSubview(whiteRoundedView)
+        cell.contentView.sendSubview(toBack: whiteRoundedView)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell")
         cell?.textLabel?.text = data[indexPath.row].name
@@ -43,11 +69,17 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
         return cell!
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
+        let URL = productInfo.permalink
+        OpenURL.sharedInstance.openBrowser(Link: URL)
+
+    }
+    
     func fetchResultsController() -> NSFetchedResultsController<Item>
     {
         self.requestProduct.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let frc = NSFetchedResultsController(fetchRequest: self.requestProduct , managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
-    //    frc.delegate = self
         do
         {
             try frc.performFetch()

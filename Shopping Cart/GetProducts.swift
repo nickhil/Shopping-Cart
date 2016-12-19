@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  getProducts.swift
 //  Shopping Cart
 //
 //  Created by Nikhil on 16/12/16.
@@ -10,16 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
     static let sharedInstance = ViewController()
 
     func searchProduct(categoryID: String,completionHandler: @escaping (_ success: Bool, _ error: String?)-> Void) {
         
-        
+        var test : Int = 0
         let method = "https://www.shimply.com/api/search/list?category_id=\(categoryID)&key=3dfbd87d98638c8a3dc9b778124a2873"
         
         let url = URL(string: method)!
@@ -57,17 +52,28 @@ class ViewController: UIViewController {
             {
             if let data1 = parsedData[key] as? [String:AnyObject] {
                     ProductDetails.sharedInstance.productData.append(ProductList.init(details: data1))
+                test+=1
                 }
                     else {
                 print("cannot find data")
                 }
             }
+            if test != 0 {
+                
                 print("Object data is \(ProductDetails.sharedInstance.productData)")
-        
+                
+                completionHandler(true,"Done")
+                return
+            }
+            else
+            {
+            completionHandler(false,"Fail")
+            }
         }
+        test = 0
     task.resume()
     }
-    
-    }
+
+}
 
 
