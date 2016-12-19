@@ -11,10 +11,10 @@ import UIKit
 
 struct ProductList{
     let name: String
-    let price: String //Double
+    let price: String
     let image_url: String
     let permalink: String
-    let instock: String //Int
+    let instock: String
     let id: String
     let ship: String
     

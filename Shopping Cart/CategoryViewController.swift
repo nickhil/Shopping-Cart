@@ -24,14 +24,14 @@ class CategoryViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120.0
+        return 90.0
         
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
         
-        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 100))
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 90))
         
         whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
         whiteRoundedView.layer.masksToBounds = false

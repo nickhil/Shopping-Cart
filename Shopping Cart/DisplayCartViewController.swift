@@ -43,14 +43,14 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120.0
+        return 90.0
         
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
         
-        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 120))
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 90))
         
         whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
         whiteRoundedView.layer.masksToBounds = false
@@ -65,6 +65,7 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell")
         cell?.textLabel?.text = data[indexPath.row].name
+        cell?.textLabel?.numberOfLines = 0
         cell?.detailTextLabel?.text = "Name \(data[indexPath.row].name!) \t Price \(data[indexPath.row].price! ) "
         return cell!
     }
@@ -89,11 +90,6 @@ class DisplayCartViewController: UIViewController, UITableViewDataSource, UITabl
             print("unable to fetch the objects using frc")
             return frc
         }
-        
         return frc
     }
-    
-    
-
-
 }

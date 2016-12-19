@@ -38,8 +38,7 @@ extension CategoryList {
     static func categoryData() -> [[String : String]] {
         return [
             [CategoryList.CodeKey : "1", CategoryList.TitleKey : "Gaming", CategoryList.ImageNameKey : "gaming"],
-            [CategoryList.CodeKey : "5266", CategoryList.TitleKey : "Books", CategoryList.ImageNameKey : "books"],
-            [CategoryList.CodeKey : "371", CategoryList.TitleKey : "Clothing", CategoryList.ImageNameKey : "clothing"],
+              [CategoryList.CodeKey : "371", CategoryList.TitleKey : "Clothing", CategoryList.ImageNameKey : "clothing"],
             [CategoryList.CodeKey : "948", CategoryList.TitleKey : "Watches", CategoryList.ImageNameKey : "watches"],
             [CategoryList.CodeKey : "130", CategoryList.TitleKey : "Sports & Fitness", CategoryList.ImageNameKey : "sports"],
             [CategoryList.CodeKey : "1528", CategoryList.TitleKey : "Auto-Parts", CategoryList.ImageNameKey : "autoparts"],        

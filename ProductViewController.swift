@@ -13,36 +13,36 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     var product : CategoryList!
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        self.setUIEnable(enable: false)
         tableView.delegate = self
         tableView.dataSource = self
-        setUIEnable(enable: false)
         ViewController.sharedInstance.searchProduct(categoryID: self.product.code, completionHandler: {(success, error) in
+            self.setUIEnable(enable: false)
             if success{
+                self.setUIEnable(enable: false)
                 DispatchQueue.main.async {
-                performUIUpdatesOnMain(updates: {self.setUIEnable(enable: true)
-                })
-                print("in success")
-                self.tableView.reloadData()
+                performUIUpdatesOnMain(updates: {
+                    self.tableView.reloadData()
+                    self.setUIEnable(enable: true)
+                    })
                 }
             }
             else {
-                
                 performUIUpdatesOnMain(updates:{
                     Alert.sharedInstance.showAlert(controller: self, title: "Internet Connection Failed", message: "Please Check the Internet")
                     })
-                self.setUIEnable(enable: true)
-
-        }
+               self.setUIEnable(enable: true)
+            }
         })
-        
-    setUIEnable(enable: true)
     self.tableView.reloadData()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
     
         tableView.reloadData()
@@ -65,21 +65,20 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120.0
+        return 110.0
         
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
         
-        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 120))
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 110))
         
         whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
         whiteRoundedView.layer.masksToBounds = false
         whiteRoundedView.layer.cornerRadius = 2.0
         whiteRoundedView.layer.shadowOffset = CGSize(width: -1,height: 1)
         whiteRoundedView.layer.shadowOpacity = 0.2
-        
         cell.contentView.addSubview(whiteRoundedView)
         cell.contentView.sendSubview(toBack: whiteRoundedView)
         
@@ -89,24 +88,19 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
         let cell = UITableViewCell(style: UITableViewCellStyle.subtitle , reuseIdentifier: "studentCell")
-     //   cell.imageView?.image = UIImage(named: "Pin")
        cell.textLabel?.numberOfLines = 0
-  cell.textLabel?.text = productInfo.name
+        cell.textLabel?.text = productInfo.name
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = "INR \(productInfo.price)"
-        
-      /*  let url = NSURL(string: productInfo.image_url)
+        let url = NSURL(string: productInfo.image_url)
         let data = NSData(contentsOf: url! as URL)
         if data != nil{
-        cell.imageView?.image = UIImage(data: data! as Data)
+            cell.imageView?.image = setImage(image: UIImage(data: data! as Data)!, scaledToSize: CGSize (width: 100 ,height: 100))
         }
-        */
-        
                return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // trying -1
         let productInfo = ProductDetails.sharedInstance.productData[(indexPath as NSIndexPath).row]
         let productController = self.storyboard!.instantiateViewController(withIdentifier: "ProductDetailsViewController") as! ProductDetailsViewController
         let indexPath = tableView.indexPathForSelectedRow!
@@ -115,9 +109,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         productController.productCode = (currentCell.textLabel?.text)!
         self.navigationController!.pushViewController(productController, animated: true)
     }
-    
-    
-    
+
     func setUIEnable(enable: Bool){
         if enable{
         performUIUpdatesOnMain(updates: {
@@ -125,10 +117,20 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         self.activityIndicator.stopAnimating()
         })
         }else{
-            self.tableView.alpha = 0.5
-            self.activityIndicator.startAnimating()
-        }
+            performUIUpdatesOnMain (updates: {
+                self.tableView.alpha = 0.5
+                self.activityIndicator.startAnimating()
+            })
+            }
     
     }
+    
+    func setImage(image: UIImage,scaledToSize newSize:CGSize) -> UIImage{
+    
+            UIGraphicsBeginImageContext(newSize)
+        image.draw(in: CGRect(x: 0,y: 0,width: newSize.width,height: newSize.height))
+        return image
+    }
+    
        
  }

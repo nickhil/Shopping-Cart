@@ -33,13 +33,12 @@ class ProductDetailsViewController: UIViewController{
         displayDetails()
     }
     
-
     
     func displayDetails(){
         nameLabel.numberOfLines = 0
         codeLabel.text = "Product Code: \(productDetail.id)"
         nameLabel.text = "Product:\(productDetail.name)"
-        priceLabel.text = "Cost: \(productDetail.price)"
+        priceLabel.text = "Cost: \(productDetail.price) INR"
         inStockLabel.text = "In Stock: \(productDetail.instock) piece(s)"
         shipLabel.text = "To be Shipped in:\(productDetail.ship) days"
         productImage.contentMode = .scaleAspectFit
