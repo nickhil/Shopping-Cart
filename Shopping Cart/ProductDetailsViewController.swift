@@ -36,8 +36,8 @@ class ProductDetailsViewController: UIViewController{
     
     
     @IBAction func fontStepperChanged(_ sender: AnyObject) {
-     nameLabel.font = nameLabel.font.withSize(CGFloat(fontStepper.value))
-     priceLabel.font = priceLabel.font.withSize(CGFloat(fontStepper.value))
+        nameLabel.font = nameLabel.font.withSize(CGFloat(fontStepper.value))
+        priceLabel.font = priceLabel.font.withSize(CGFloat(fontStepper.value))
         inStockLabel.font = inStockLabel.font.withSize(CGFloat(fontStepper.value))
         shipLabel.font = shipLabel.font.withSize(CGFloat(fontStepper.value))
         

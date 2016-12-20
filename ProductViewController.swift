@@ -65,14 +65,14 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0
+        return 150.0
         
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.backgroundColor = UIColor.clear
         
-        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 110))
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 0, y: 10,width: self.view.frame.size.width,height: 140))
         
         whiteRoundedView.layer.backgroundColor = CGColor.init(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
         whiteRoundedView.layer.masksToBounds = false
@@ -93,11 +93,12 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = "INR \(productInfo.price)"
     
+        cell.imageView?.contentMode = UIViewContentMode.scaleAspectFit
         
         let url = NSURL(string: productInfo.image_url)
         let data = NSData(contentsOf: url! as URL)
         if data != nil{
-            cell.imageView?.image = setImage(image: UIImage(data: data! as Data)!, scaledToSize: CGSize (width: 100 ,height: 100))
+            cell.imageView?.image = setImage(image: UIImage(data: data! as Data)!, scaledToSize: CGSize (width: 70 ,height: 70))
         }
                return cell
     }
