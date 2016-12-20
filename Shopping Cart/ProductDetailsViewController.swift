@@ -20,9 +20,10 @@ class ProductDetailsViewController: UIViewController{
     var productCode : String = ""
     var productDetail : ProductList!
 
+    @IBOutlet weak var fontStepper: UIStepper!
     @IBOutlet weak var displayCartButton: UIButton!
-    @IBOutlet weak var codeLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
+  
     @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var inStockLabel: UILabel!
@@ -34,9 +35,16 @@ class ProductDetailsViewController: UIViewController{
     }
     
     
+    @IBAction func fontStepperChanged(_ sender: AnyObject) {
+     nameLabel.font = nameLabel.font.withSize(CGFloat(fontStepper.value))
+     priceLabel.font = priceLabel.font.withSize(CGFloat(fontStepper.value))
+        inStockLabel.font = inStockLabel.font.withSize(CGFloat(fontStepper.value))
+        shipLabel.font = shipLabel.font.withSize(CGFloat(fontStepper.value))
+        
+    
+    }
     func displayDetails(){
         nameLabel.numberOfLines = 0
-        codeLabel.text = "Product Code: \(productDetail.id)"
         nameLabel.text = "Product:\(productDetail.name)"
         priceLabel.text = "Cost: \(productDetail.price) INR"
         inStockLabel.text = "In Stock: \(productDetail.instock) piece(s)"
@@ -73,4 +81,6 @@ class ProductDetailsViewController: UIViewController{
             Alert.sharedInstance.showAlert(controller: self, title: "Cannot add product to the cart", message: error.localizedDescription)
         }
         }
-   }
+    
+   
+}

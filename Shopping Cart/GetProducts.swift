@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+/*
 class ViewController: UIViewController {
 
     static let sharedInstance = ViewController()
@@ -76,4 +76,4 @@ class ViewController: UIViewController {
 
 }
 
-
+*/

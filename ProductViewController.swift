@@ -22,7 +22,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         self.setUIEnable(enable: false)
         tableView.delegate = self
         tableView.dataSource = self
-        ViewController.sharedInstance.searchProduct(categoryID: self.product.code, completionHandler: {(success, error) in
+        NetworkClass.sharedInstance.searchProduct(categoryID: self.product.code, completionHandler: {(success, error) in
             self.setUIEnable(enable: false)
             if success{
                 self.setUIEnable(enable: false)
@@ -92,6 +92,8 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         cell.textLabel?.text = productInfo.name
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = "INR \(productInfo.price)"
+    
+        
         let url = NSURL(string: productInfo.image_url)
         let data = NSData(contentsOf: url! as URL)
         if data != nil{
